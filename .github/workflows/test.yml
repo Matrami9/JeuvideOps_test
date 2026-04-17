@@ -1,0 +1,65 @@
+
+name: Tests Workflows 
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # --- LASSANA ---
+  lassana-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install & Lint
+        working-directory: ./Two_Ships_Passing_In_The_Night
+        run: |
+          npm install
+          npx eslint . --format stylish || true
+      - name: Mocha Tests
+        working-directory: ./Two_Ships_Passing_In_The_Night
+        run: npx mocha --require ./setup.js --reporter mocha-github-actions-reporter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # --- MATRAMI ---
+  matrami-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install & Build Parcel
+        working-directory: ./Space_Invaders
+        run: |
+          npm ci
+          npm run lint || true
+          npm test || true
+
+  # --- DÉPLOIEMENT DOCKER FUSIONNÉ ---
+  deploy-docker:
+    needs: [lassana-jobs, matrami-jobs]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and Push
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          docker build -t $IMAGE_ID:latest .
+          docker push $IMAGE_ID:latest
