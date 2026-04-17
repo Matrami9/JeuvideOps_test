@@ -1,26 +1,25 @@
-# -- Lassana -- #
-FROM node:20 AS builder
+# Stage 1 : Build Lassana
+FROM node:20-alpine AS build_lassana
 WORKDIR /app
-RUN apt-get update && apt-get install -y \ advzip \ zlib1g-dev 
-COPY Two_Ships_Passing_In_The_Night/package*.json ./
-RUN npm install
-COPY Two_Ships_Passing_In_The_Night/ .
-RUN npx gulp dist
-
-# -- Matrami -- #
-FROM node:20 AS builde
-WORKDIR /app
-COPY Space_Invaders/package*.json ./
+COPY ./Two_Ships_Passing_In_The_Night/package*.json ./
 RUN npm ci
-COPY Space_Invaders/ .
-RUN npx parcel build src/index.html --out-dir build --public-url ./ --no-source-maps
+COPY ./Two_Ships_Passing_In_The_Night ./
+RUN npm run build --if-present
 
+# Stage 2 : Build Matrami
+FROM node:20-alpine AS build_matrami
+WORKDIR /app
+COPY ./Space_Invaders/package*.json ./
+RUN npm ci
+COPY ./Space_Invaders ./
+# Utilisation du build forcé si le script build n'est pas standard
+RUN npx parcel build index.html -d build --public-url ./ --no-source-maps
+
+# Stage final : Nginx
 FROM nginx:alpine
-# Page d'accueil racine
-COPY index.html /usr/share/nginx/html/
-
-COPY --from=build-Two_Ships_Passing_In_The_Night /app/dist /usr/share/nginx/html/Two_Ships_Passing_In_The_Night
-
-COPY --from=build-Space_Invaders /app/build /usr/share/nginx/html/Space_Invaders
-
+# On utilise les noms en minuscules ici aussi
+COPY --from=build_lassana /app/dist /usr/share/nginx/html/lassana
+COPY --from=build_matrami /app/build /usr/share/nginx/html/matrami
+# Optionnel : redirection de l'accueil vers un des jeux
+COPY --from=build_matrami /app/build /usr/share/nginx/html/
 EXPOSE 80
