@@ -60,13 +60,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # IMPORTANT : Si ton Dockerfile a besoin des dossiers build de chaque jeu, 
-      # il faut les re-générer ici ou utiliser des "artifacts". 
-      # Pour faire simple, on rebuild rapidement avant le docker build :
-      - name: Build All Games
-        run: |
-          cd Space_Invaders && npm ci && npm run build --if-present
-          cd ../Two_Ships_Passing_In_The_Night && npm ci && npm run build --if-present
 
       - name: Login to GHCR
         uses: docker/login-action@v3
