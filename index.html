@@ -3,15 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JEU VIDÉOps</title>
+    <title>JEU VIDÉOps - Portail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <a href="./Two_Ships_Passing_In_The_Night/">
-        <h1>Jouer à Two Ships Passing In The Night</h1>
-    </a>
+<body class="bg-zinc-950 text-white min-h-screen flex flex-col items-center justify-center p-6">
 
-    <a href="./Space_Invaders/">
-        Jouer à Space Invaders
-    </a>
+    <header class="text-center mb-16">
+        <h1 class="text-5xl md:text-6xl font-gaming font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 drop-shadow-sm">
+            JEU VIDÉOps
+        </h1>
+        <p class="text-zinc-400 mt-4 tracking-widest uppercase text-sm">Portail de déploiement CI/CD</p>
+    </header>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
+        
+        <a href="./Two_Ships_Passing_In_The_Night/" 
+           class="group relative bg-zinc-900 border-2 border-zinc-800 p-8 rounded-2xl transition-all duration-300 hover:border-emerald-500 neon-border">
+            <div class="absolute -top-4 left-6 bg-emerald-500 text-zinc-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Exploration</div>
+            <h2 class="text-2xl font-gaming mb-4 group-hover:text-emerald-400 transition-colors">Two Ships Passing</h2>
+            <p class="text-zinc-500 text-sm leading-relaxed">
+                Une aventure spatiale atmosphérique développée pour la JS13K.
+            </p>
+            <div class="mt-6 flex items-center text-emerald-500 font-bold text-sm uppercase tracking-wider">
+                Lancer le moteur <span class="ml-2 group-hover:translate-x-2 transition-transform">→</span>
+            </div>
+        </a>
+
+        <a href="./Space_Invaders/" 
+           class="group relative bg-zinc-900 border-2 border-zinc-800 p-8 rounded-2xl transition-all duration-300 hover:border-cyan-500 neon-border">
+            <div class="absolute -top-4 left-6 bg-cyan-500 text-zinc-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Arcade</div>
+            <h2 class="text-2xl font-gaming mb-4 group-hover:text-cyan-400 transition-colors">Space Invaders</h2>
+            <p class="text-zinc-500 text-sm leading-relaxed">
+                Le classique revisité, compilé avec Parcel et TypeScript.
+            </p>
+            <div class="mt-6 flex items-center text-cyan-500 font-bold text-sm uppercase tracking-wider">
+                Initialiser le build <span class="ml-2 group-hover:translate-x-2 transition-transform">→</span>
+            </div>
+        </a>
+
+    </main>
+
+    <footer class="mt-20 text-zinc-600 text-xs font-mono uppercase tracking-tighter">
+        Stack: Docker • Nginx • GitHub Actions • Tailwind
+    </footer>
+
 </body>
 </html>
