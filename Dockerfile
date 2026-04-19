@@ -15,6 +15,7 @@ RUN npm ci
 COPY ./Space_Invaders ./
 RUN npx parcel build src/index.html -d build --public-url ./ --no-source-maps
 
+
 # Stage final : Nginx
 FROM nginx:alpine
 
