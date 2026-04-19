@@ -17,7 +17,8 @@ RUN npx parcel build src/index.html -d build --public-url ./ --no-source-maps
 
 # Stage final : Nginx
 FROM nginx:alpine
-COPY --from=build_lassana /app/dist /usr/share/nginx/html/lassana
-COPY --from=build_matrami /app/build /usr/share/nginx/html/matrami
-COPY --from=build_matrami /app/build /usr/share/nginx/html/
+
+COPY index.html /usr/share/nginx/html/index.html
+COPY --from=build_lassana /app/dist /usr/share/nginx/html/Two_Ships_Passing_In_The_Night
+COPY --from=build_matrami /app/build /usr/share/nginx/html/Space_Invaders
 EXPOSE 80
