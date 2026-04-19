@@ -13,7 +13,6 @@ WORKDIR /app
 COPY ./Space_Invaders/package*.json ./
 RUN npm ci
 COPY ./Space_Invaders ./
-# CORRECTION ICI : on pointe vers src/index.html
 RUN npx parcel build src/index.html -d build --public-url ./ --no-source-maps
 
 # Stage final : Nginx
