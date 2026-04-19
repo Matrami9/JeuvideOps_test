@@ -47,8 +47,8 @@ jobs:
         working-directory: ./Space_Invaders
         run: |
           npm ci
-          npm run lint || true
-          npm test || true
+          npm run lint 
+          npm test 
 
   # --- DÉPLOIEMENT DOCKER FUSIONNÉ ---
   deploy-docker:
