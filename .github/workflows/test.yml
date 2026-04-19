@@ -3,7 +3,7 @@ name: Tests Workflows
 on:
   push:
     branches: [main]
-  pull_request:         # Ajouté pour le feedback de Guillaume
+  pull_request:        
     branches: [main]
   workflow_dispatch:
 
